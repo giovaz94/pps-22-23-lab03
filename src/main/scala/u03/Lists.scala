@@ -22,6 +22,17 @@ object Lists extends App :
       case Cons(_, t) => filter(t)(pred)
       case Nil() => Nil()
 
+    @scala.annotation.tailrec
+    def drop[A](l: List[A], n: Int): List[A] = (l, n) match
+      case (Cons(a, t), 0) => Cons(a, t)
+      case (Nil(), _) => Nil()
+      case (Cons(_, t), i) => drop(t, n - 1)
+
+    def append[A](left: List[A], right: List[A]): List[A] = (left, right) match
+      case (Nil(), _) => right
+      case (Cons(h, t), _) => Cons(h, append(t, right))
+
+
   val l = List.Cons(10, List.Cons(20, List.Cons(30, List.Nil())))
   println(List.sum(l)) // 60
 
