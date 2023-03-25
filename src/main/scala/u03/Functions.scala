@@ -1,9 +1,10 @@
 package u03
 
 import scala.annotation.tailrec
+import scala.jdk.Accumulator
 
 
-object Lists extends App :
+object Functions extends App :
 
   // A generic linkedlist
   enum List[E]:
@@ -11,7 +12,7 @@ object Lists extends App :
     case Nil()
   // a companion object (i.e., module) for List
   object List:
-    
+
     def sum(l: List[Int]): Int = l match
       case Cons(h, t) => h + sum(t)
       case _ => 0
@@ -48,23 +49,38 @@ object Lists extends App :
         case false => Nil()
       )
 
+  import Functions.List.*
+
+  enum Person:
+    case Student(name: String, year: Int)
+    case Teacher(name: String, course: String)
+
+  object Person:
+
+    def listCourses(lst: List[Person]): List[String] = lst match
+      case _ => flatMap(lst)(x => x match
+        case Teacher(_, c) => Cons(c, Nil())
+        case _ => Nil())
+
+/**
+ *  foldLeft (lst, accumulator)(op) = lst match
+ *    case Cons(h, t) => foldLeft(t, op(h, accumulator))(op)
+ *    case Nil() => accumulator
+ */
+  @tailrec
+  def foldLeft[A](lst: List[A])(accumulator: A)(f: (x:A, y:A) => A): A = lst match
+    case Nil() => accumulator
+    case Cons(h, t) => foldLeft(t)(f(accumulator, h))(f)
+
+  @tailrec
+  def reverseList[A](lst: List[A], b: List[A]): List[A] = lst match
+    case Cons(h, t) => reverseList(t, append(Cons(h, Nil()), b))
+    case Nil() => b
+
+  def foldRight[A](lst: List[A])(accumulator: A)(f: (x:A, y:A) => A): A = lst match
+    case _ => foldLeft(reverseList(lst, Nil()))(accumulator)(f)
 
 
-  import Lists.List.*
 
-  val l = Cons(10, Cons(20, Cons(20, Cons(30, Nil()))))
-  val e: Int => List[Int] = v => Cons(v + 1, Cons(v + 2, Nil()))
-
-
-  println(drop(l,1))
-  //println(filterWithFlatMap(l)(_ >= 20))
-
-  /*
-  val l = List.Cons(10, List.Cons(20, List.Cons(30, List.Nil())))
-  val e: Int => List[Int] = v => Cons(v + 1, Cons(v + 2, Nil()))
-  println(List.sum(l)) // 60
-
-  import List.*
-
-  println(sum(map(filter(l)(_ >= 20))(_ + 1))) // 21+31 = 52
-  println(e(3))*/
+  var l: List[Int] = Cons(3, Cons(7, Nil()))
+  println(foldLeft(l)(0)((x: Int, y: Int) => x - y))
