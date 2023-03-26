@@ -22,12 +22,6 @@ object Streams extends App :
     def constant[A](value: => A): Stream[A] = value match
       case _ => cons(value, constant(value))
 
-
-    /**
-     * innerFib(v1: => Int, v2:  =>Int) = (v1, v2) match
-     *  case (0, _)   => Cons(0, innerFib(0, 1))
-     *  case _ =>  Cons(v1 + v2, innerFib(v2, v1 + v2))
-     */
     def fibs: Stream[Int] =
       def innerFibonacci(v: =>Int): Int = v match
         case 0 => 0
