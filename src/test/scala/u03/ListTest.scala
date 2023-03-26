@@ -4,13 +4,6 @@ import org.junit.*
 import org.junit.Assert.*
 import Lists.*
 
-/**
- * append(left: List[A], right: List[A]) -> List[A]
- *  case (List(h, Nil()), r) => List(h, r)
- *  case (List(e, List(h, t)), r) => List(e, append(List(h, t), r))
- *
- */
-
 class ListTest:
   import List.*
 

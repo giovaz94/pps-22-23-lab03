@@ -7,11 +7,10 @@ import scala.annotation.tailrec
 
 object Functions extends App :
 
-  // A generic linkedlist
   enum List[E]:
     case Cons(head: E, tail: List[E])
     case Nil()
-  // a companion object (i.e., module) for List
+
   object List:
 
     def sum(l: List[Int]): Int = l match
@@ -96,6 +95,8 @@ object Functions extends App :
 
   object Streams extends App:
 
+    import Functions.List.*
+    
     enum Stream[A]:
       private case Empty()
       private case Cons(head: () => A, tail: () => Stream[A])
