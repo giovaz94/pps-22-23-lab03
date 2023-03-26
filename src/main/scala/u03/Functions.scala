@@ -62,13 +62,8 @@ object Functions extends App :
         case Teacher(_, c) => Cons(c, Nil())
         case _ => Nil())
 
-/**
- *  foldLeft (lst, accumulator)(op) = lst match
- *    case Cons(h, t) => foldLeft(t, op(h, accumulator))(op)
- *    case Nil() => accumulator
- */
   @tailrec
-  def foldLeft[A](lst: List[A])(accumulator: A)(f: (x:A, y:A) => A): A = lst match
+  def foldLeft[A, B <: A](lst: List[A])(accumulator: B)(f: (x:B, y:A) => B): A = lst match
     case Nil() => accumulator
     case Cons(h, t) => foldLeft(t)(f(accumulator, h))(f)
 
@@ -77,10 +72,10 @@ object Functions extends App :
     case Cons(h, t) => reverseList(t, append(Cons(h, Nil()), b))
     case Nil() => b
 
-  def foldRight[A](lst: List[A])(accumulator: A)(f: (x:A, y:A) => A): A = lst match
-    case _ => foldLeft(reverseList(lst, Nil()))(accumulator)(f)
+  def foldRight[A, B <: A](lst: List[A])(accumulator: B)(f: (x:A, y:B) => B): A = lst match
+    case _ => foldLeft(reverseList(lst, Nil()))(accumulator)((a,x) => f(x, a))
 
 
 
-  var l: List[Int] = Cons(3, Cons(7, Nil()))
-  println(foldLeft(l)(0)((x: Int, y: Int) => x - y))
+  var l: List[Int] = Cons(3, Cons(7, Cons(5, Cons(6, Nil()))))
+  //println(foldLeft(l)(0)((x: Int, y: Int) => x - y))

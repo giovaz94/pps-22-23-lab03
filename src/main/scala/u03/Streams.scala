@@ -19,14 +19,22 @@ object Streams extends App :
       lazy val tail = tl
       Cons(() => head, () => tail)
 
-    /**
-     *
-     * constant(x) = _ match
-     *  _ => cons(x(), constant(x))
-     *
-     */
     def constant[A](value: => A): Stream[A] = value match
       case _ => cons(value, constant(value))
+
+
+    /**
+     * innerFib(v1: => Int, v2:  =>Int) = (v1, v2) match
+     *  case (0, _)   => Cons(0, innerFib(0, 1))
+     *  case _ =>  Cons(v1 + v2, innerFib(v2, v1 + v2))
+     */
+    def fibs: Stream[Int] =
+      def innerFibonacci(v: =>Int): Int = v match
+        case 0 => 0
+        case 1 => 1
+        case _ => innerFibonacci(v - 1) + innerFibonacci(v - 2)
+      Stream.map(Stream.iterate(0)(_ + 1))(innerFibonacci)
+
 
     def toList[A](stream: Stream[A]): List[A] = stream match
       case Cons(h, t) => List.Cons(h(), toList(t()))
@@ -49,8 +57,6 @@ object Streams extends App :
     def drop[A](stream: Stream[A])(n: Int): Stream[A] = stream match
       case Cons(_, t) if (n > 0) => drop(t())(n - 1)
       case _ => stream
-
-
 
     def iterate[A](init: => A)(next: A => A): Stream[A] =
       cons(init, iterate(next(init))(next))
