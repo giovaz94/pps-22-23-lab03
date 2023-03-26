@@ -45,12 +45,12 @@ object Functions extends App :
       case Cons(h, t) => append(f(h), flatMap(t)(f))
 
     // Task01: mapWithFlatMap --> svolto da solo
-    def mapWithFlatMap[A, B](lst: List[A])(f: A => B): List[B] = lst match
-      case _ => flatMap(lst)(v => Cons(f(v), Nil()))
+    def mapWithFlatMap[A, B](lst: List[A])(f: A => B): List[B] =
+      flatMap(lst)(v => Cons(f(v), Nil()))
 
     // Task01: filterWithFlatMap --> svolto da solo
-    def filterWithFlatMap[A](lst: List[A])(pred: A => Boolean): List[A] = lst match
-      case _ => flatMap(lst)(x => pred(x) match
+    def filterWithFlatMap[A](lst: List[A])(pred: A => Boolean): List[A] =
+      flatMap(lst)(x => pred(x) match
         case true => Cons(x, Nil())
         case false => Nil())
 
@@ -89,14 +89,14 @@ object Functions extends App :
     case Cons(h, t) => reverseList(t, append(Cons(h, Nil()), b))
     case Nil() => b
 
-  def foldRight[A, B <: A](lst: List[A])(accumulator: B)(f: (x: A, y: B) => B): A = lst match
-    case _ => foldLeft(reverseList(lst, Nil()))(accumulator)((a, x) => f(x, a))
+  def foldRight[A, B <: A](lst: List[A])(accumulator: B)(f: (x: A, y: B) => B): A =
+    foldLeft(reverseList(lst, Nil()))(accumulator)((a, x) => f(x, a))
 
 
   object Streams extends App:
 
     import Functions.List.*
-    
+
     enum Stream[A]:
       private case Empty()
       private case Cons(head: () => A, tail: () => Stream[A])
@@ -137,8 +137,8 @@ object Functions extends App :
         case _ => stream
 
       // Task03: constant --> svolto da solo
-      def constant[A](value: => A): Stream[A] = value match
-        case _ => cons(value, constant(value))
+      def constant[A](value: => A): Stream[A] =
+        cons(value, constant(value))
 
       // Task03: fibs --> svolto da solo
       def fibs: Stream[Int] =
