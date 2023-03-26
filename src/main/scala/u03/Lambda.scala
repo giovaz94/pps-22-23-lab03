@@ -9,6 +9,7 @@ object Lambda:
   val True: L = x => y => x
   val False: L = x => y => y
   val Not: L = b => b(False)(True)
+  
   val And: L = b1 => b2 => b1(b2)(False)
   val Or: L = b1 => b2 => b1(True)(b2)
 
