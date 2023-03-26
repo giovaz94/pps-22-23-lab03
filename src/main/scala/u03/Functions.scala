@@ -71,8 +71,8 @@ object Functions extends App :
 
   object Person:
 
-    def listCourses(lst: List[Person]): List[String] = lst match
-      case _ => flatMap(lst)(x => x match
+    def listCourses(lst: List[Person]): List[String] =
+      flatMap(lst)(x => x match
         case Teacher(_, c) => Cons(c, Nil())
         case _ => Nil())
 
